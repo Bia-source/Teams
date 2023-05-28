@@ -1,13 +1,13 @@
 import React, {  Text } from "react-native";
-import { Container, Title } from "./style";
+import * as S from "./style";
 
 export function Groups(){
    return (
-    <Container>
-        <Title>
+    <S.Container>
+        <S.Title>
             Groups
-        </Title>
-    </Container>
+        </S.Title>
+    </S.Container>
    )
 }
 
