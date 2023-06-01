@@ -1,4 +1,4 @@
-import { BackIcon, Backbutton, Container, Logo } from "./style";
+import * as S from "./style";
 
 import logoImg from '@assets/logo.png';
 
@@ -8,14 +8,14 @@ type Props = {
 
 export function Header({ showBackButton = false }: Props) {
     return (
-        <Container>
+        <S.Container>
             {showBackButton &&
-                <Backbutton>
-                    <BackIcon />
-                </Backbutton>
+                <S.Backbutton>
+                    <S.BackIcon />
+                </S.Backbutton>
             }
 
-            <Logo source={logoImg} />
-        </Container>
+            <S.Logo source={logoImg} />
+        </S.Container>
     )
 }

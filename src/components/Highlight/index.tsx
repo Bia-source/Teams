@@ -1,4 +1,4 @@
-import { Container, Title, SubTitle } from "./style"
+import * as S from "./style"
 
 type Props = {
     title: string;
@@ -7,10 +7,10 @@ type Props = {
 export function Highlight({ title, subtitle }: Props){
     return(
         <>
-          <Container>
-            <Title> {title} </Title>
-            <SubTitle> {subtitle} </SubTitle>
-          </Container>
+          <S.Container>
+            <S.Title> {title} </S.Title>
+            <S.SubTitle> {subtitle} </S.SubTitle>
+          </S.Container>
         </>
     )
 }

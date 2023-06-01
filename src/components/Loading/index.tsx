@@ -1,12 +1,12 @@
 import React, { } from "react-native";
-import { Container, LoadingIndicator } from "./style";
+import * as S from "./style";
 
 export function Loading(){
     return (
         <>
-         <Container>
-            <LoadingIndicator color="red"/>
-         </Container>
+         <S.Container>
+            <S.LoadingIndicator color="red"/>
+         </S.Container>
         </>
     )
 }
