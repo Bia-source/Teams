@@ -3,7 +3,8 @@ import * as S from "./style";
 import { Highlight } from "@components/Highlight";
 import { ButtonIcon } from "@components/ButtonIcon";
 import { Input } from "@components/Input";
-
+import { Filter
+ } from "@components/Filter";
 export function Players() {
     return (
         <>
@@ -20,6 +21,11 @@ export function Players() {
                     />
                     <ButtonIcon icon="add" />
                 </S.Form>
+
+                <Filter 
+                  title="Time A"
+                  
+                />
 
             </S.Container>
         </>
