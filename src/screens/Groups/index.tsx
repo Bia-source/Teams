@@ -6,6 +6,7 @@ import { GroupCard } from "@components/GroupCard";
 import { useState } from "react";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
+import { useNavigation } from "@react-navigation/native";
 
 export function Groups() {
     const [group, setGroup] = useState<string[]>([]);
