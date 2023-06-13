@@ -8,7 +8,7 @@ type Props = {
     title: string;
 }
 
-export function NewGroups({ title }: Props) {
+export function NewGroups() {
     return (
         <>
             <S.Container>

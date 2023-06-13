@@ -1,5 +1,5 @@
 import { StatusBar } from "react-native";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components/native";
 import { NewGroups } from '@screens/NewGroups';
 import theme from "./src/shared/global/theme/index";
 import { useFonts, Roboto_400Regular, Roboto_700Bold} from "@expo-google-fonts/roboto";
