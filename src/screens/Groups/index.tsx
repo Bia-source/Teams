@@ -11,6 +11,12 @@ import { useNavigation } from "@react-navigation/native";
 export function Groups() {
     const [group, setGroup] = useState<string[]>([]);
 
+    const navigation = useNavigation();
+    
+    function handleNewGroup(){
+      navigation.navigate('new')
+    }
+
     return (
         <S.Container>
             <Header />
@@ -35,6 +41,7 @@ export function Groups() {
 
            <Button 
              title="Criar nova turma"
+             onPress={handleNewGroup}
            />
         </S.Container>
     )
