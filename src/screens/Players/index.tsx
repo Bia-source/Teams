@@ -8,11 +8,12 @@ import { Input } from "@components/Input";
 import {
     Filter
 } from "@components/Filter";
+import { PlayerCard } from "@components/PlayerCard";
 
 
 export function Players() {
     const [team, setTeam] = useState('Time A');
-    const [players, setPlayers] = useState([]);
+    const [players, setPlayers] = useState(['Beatriz', 'Joao', 'Roberto']);
 
     return (
         <>
@@ -31,24 +32,34 @@ export function Players() {
                 </S.Form>
 
                 <S.HeaderList>
-                <FlatList
-                    data={['Time A', 'Time B']}
-                    keyExtractor={item => item}
-                    renderItem={({ item }) => (
-                        <Filter
-                            title={item}
-                            isActive={item === team}
-                            onPress={()=> setTeam(item)}
-                        />
-                    )}
-                    horizontal
-                />
+                    <FlatList
+                        data={['Time A', 'Time B']}
+                        keyExtractor={item => item}
+                        renderItem={({ item }) => (
+                            <Filter
+                                title={item}
+                                isActive={item === team}
+                                onPress={() => setTeam(item)}
+                            />
+                        )}
+                        horizontal
+                    />
 
-                <S.NumbersOffPlayers>
-                    {players.length}
-                </S.NumbersOffPlayers>
+                    <S.NumbersOffPlayers>
+                        {players.length}
+                    </S.NumbersOffPlayers>
                 </S.HeaderList>
 
+                <FlatList
+                    data={players}
+                    keyExtractor={item => item}
+                    renderItem={({ item }) => (
+                        <PlayerCard
+                            name={item}
+                            onRemove={() => { }}
+                        />
+                    )}
+                />
             </S.Container>
         </>
     )
