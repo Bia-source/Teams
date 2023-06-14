@@ -3,19 +3,34 @@ import * as S from "./style";
 import { Header } from "@components/Header";
 import { Highlight } from "@components/Highlight";
 import { GroupCard } from "@components/GroupCard";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { groupsGetAll } from "@storage/group/groupGetAll";
 
 export function Groups() {
-    const [group, setGroup] = useState<string[]>([]);
+    const [groups, setGroup] = useState<string[]>([]);
 
     const navigation = useNavigation();
     
     function handleNewGroup(){
       navigation.navigate('new')
     }
+
+    async function fetchGroups(){
+        try {
+            const data = await groupsGetAll();
+            setGroup(data);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useFocusEffect(useCallback(()=> {
+        console.log("useFocusEffect");
+      fetchGroups();
+    }, []))
 
     return (
         <S.Container>
@@ -26,14 +41,14 @@ export function Groups() {
             />
 
             <FlatList
-                data={group}
+                data={groups}
                 keyExtractor={(item) => item}
                 renderItem={({ item }) => (
                     <GroupCard
                         title={item}
                     />
                 )}
-                contentContainerStyle={group.length === 0 && { flex: 1}}
+                contentContainerStyle={groups.length === 0 && { flex: 1}}
                 ListEmptyComponent={(
                     <ListEmpty message="Você não possui nenhuma turma cadastrada"/>
                 )}

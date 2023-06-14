@@ -3,8 +3,10 @@ import * as S from "./style";
 import { Highlight } from "@components/Highlight";
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useCallback, useState } from "react";
+import { groupsGetAll } from "@storage/group/groupGetAll";
+import { groupCreate } from "@storage/group/groupCreate";
 
 type Props = {
     title: string;
@@ -15,9 +17,16 @@ export function NewGroups() {
 
     const [group, setGroup] = useState('');
 
-    function handleNew(){
-       navigation.navigate('players', { group });
+    async function handleNew(){
+        try {
+            await groupCreate(group);
+            navigation.navigate('players', { group });
+        } catch (error) {
+            console.log(error);
+        }
+       
     }
+
 
     return (
         <>
