@@ -49,6 +49,7 @@ export function Players() {
             // e fechar ela automaticamente 
             //newPlayerNameInputRef.current?.blur();
             Keyboard.dismiss()
+            console.log()
             setNewPlayerName('');
         } catch (error) {
             if (error instanceof AppError) {
@@ -89,6 +90,8 @@ export function Players() {
                         autoCorrect={false}
                         onChangeText={setNewPlayerName}
                         value={newPlayerName}
+                        onSubmitEditing={handleAddPlayer}
+                        returnKeyType="default"
                     />
                     <ButtonIcon icon="add" onPress={handleAddPlayer} />
                 </S.Form>
