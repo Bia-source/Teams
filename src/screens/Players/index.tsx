@@ -35,7 +35,7 @@ export function Players() {
 
     async function handleAddPlayer() {
         if (newPlayerName.trim().length === 0) {
-            return Alert.alert('Nova Pessoa', 'Informe o nome da pessoa para adicionar');
+            return Alert.alert('Novo Jogador', 'Informe o nome da pessoa para adicionar');
         }
 
         const newPlayer = {
@@ -53,10 +53,10 @@ export function Players() {
             setNewPlayerName('');
         } catch (error) {
             if (error instanceof AppError) {
-                Alert.alert('Nova pessoa', error.message);
+                Alert.alert('Novo Jogador', error.message);
             } else {
                 console.log(error);
-                Alert.alert('Nova pessoa', 'Não foi possivel adicionar');
+                Alert.alert('Novo Jogador', 'Não foi possivel adicionar');
             }
         }
     }
