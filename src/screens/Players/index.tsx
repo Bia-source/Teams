@@ -8,14 +8,14 @@ import { Highlight } from "@components/Highlight";
 import { Input } from "@components/Input";
 import { ListEmpty } from "@components/ListEmpty";
 import { PlayerCard } from "@components/PlayerCard";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
-import { playerAddByGroup } from "@storage/player/playerAddByGroup";
-import { AppError } from "@utils/AppError";
-import { useCallback, useEffect, useState } from "react";
-import { Alert, FlatList } from "react-native";
-import * as S from "./style";
-import { playersGetByGroupAndTeam } from "@storage/player/playerGetByGroupAndTeam";
+import { useRoute } from "@react-navigation/native";
 import { PlayerStorageDTO } from "@storage/player/PlayerStorageDTO";
+import { playerAddByGroup } from "@storage/player/playerAddByGroup";
+import { playersGetByGroupAndTeam } from "@storage/player/playerGetByGroupAndTeam";
+import { AppError } from "@utils/AppError";
+import { useEffect, useRef, useState } from "react";
+import { Alert, FlatList, Keyboard, TextInput } from "react-native";
+import * as S from "./style";
 
 type RouteParams = {
     group: string;
@@ -30,6 +30,8 @@ export function Players() {
 
     const { group } = route.params as RouteParams;
 
+    const newPlayerNameInputRef = useRef<TextInput>(null);
+
     async function handleAddPlayer() {
         if (newPlayerName.trim().length === 0) {
             return Alert.alert('Nova Pessoa', 'Informe o nome da pessoa para adicionar');
@@ -43,6 +45,10 @@ export function Players() {
         try {
             await playerAddByGroup({ newPlayer, group });
             fetchPlayersByTeam();
+            // utilizando linha abaixo para retirar o foco da caixa de texto
+            // e fechar ela automaticamente 
+            //newPlayerNameInputRef.current?.blur();
+            Keyboard.dismiss()
             setNewPlayerName('');
         } catch (error) {
             if (error instanceof AppError) {
@@ -78,6 +84,7 @@ export function Players() {
                 />
                 <S.Form>
                     <Input
+                        inputRef={newPlayerNameInputRef}
                         placeholder="Nome da pessoa"
                         autoCorrect={false}
                         onChangeText={setNewPlayerName}
