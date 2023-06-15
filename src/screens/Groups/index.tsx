@@ -52,13 +52,19 @@ export function Groups() {
                         onPress={() => handleOpenGroup(item)}
                     />
                 )}
-                contentContainerStyle={groups.length === 0 && { flex: 1}}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={[
+                    { paddingBottom: 100 },
+                    groups.length === 0 && { flex: 1}
+                ]}
                 ListEmptyComponent={(
                     <ListEmpty message="Você não possui nenhuma turma cadastrada"/>
                 )}
+                
             />
 
            <Button 
+             style={{marginTop: 30}}
              title="Criar nova turma"
              onPress={handleNewGroup}
            />

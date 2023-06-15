@@ -16,6 +16,7 @@ import { AppError } from "@utils/AppError";
 import { useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Keyboard, TextInput } from "react-native";
 import * as S from "./style";
+import { playersDeleteByGroup } from "@storage/player/playerDeleteByGroup";
 
 type RouteParams = {
     group: string;
@@ -48,8 +49,7 @@ export function Players() {
             // utilizando linha abaixo para retirar o foco da caixa de texto
             // e fechar ela automaticamente 
             //newPlayerNameInputRef.current?.blur();
-            Keyboard.dismiss()
-            console.log()
+            Keyboard.dismiss();
             setNewPlayerName('');
         } catch (error) {
             if (error instanceof AppError) {
@@ -69,6 +69,33 @@ export function Players() {
             console.log(error);
             Alert.alert('Pessoas', 'Não foi possivel carregar as pessoas do time selecionado');
         }
+    }
+
+    async function handleRemovePlayer(playerName: string){
+       try {      
+          Alert.alert(
+            'Remover jogador',
+            `Tem certeza de que deseja remover ${playerName}?`,
+            [
+                {
+                    text: "Sim",
+                    style: "destructive",
+                    onPress: async ()=> { 
+                        await playersDeleteByGroup({group, playerName});
+                        fetchPlayersByTeam()
+                    }
+                },
+                {
+                    text: "Não",
+                    style: "cancel"
+                }
+            ]
+          )
+          
+       } catch (error) {
+         console.log(error);
+         Alert.alert('Remover Player', 'Não foi possivel remover esse jogador');
+       }
     }
 
     useEffect(()=> {
@@ -121,7 +148,7 @@ export function Players() {
                     renderItem={({ item }) => (
                         <PlayerCard
                             name={item.name}
-                            onRemove={() => { }}
+                            onRemove={() => handleRemovePlayer(item.name)}
                         />
                     )}
                     ListEmptyComponent={() => (
