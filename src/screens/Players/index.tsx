@@ -43,6 +43,7 @@ export function Players() {
         try {
             await playerAddByGroup({ newPlayer, group });
             fetchPlayersByTeam();
+            setNewPlayerName('');
         } catch (error) {
             if (error instanceof AppError) {
                 Alert.alert('Nova pessoa', error.message);
@@ -80,6 +81,7 @@ export function Players() {
                         placeholder="Nome da pessoa"
                         autoCorrect={false}
                         onChangeText={setNewPlayerName}
+                        value={newPlayerName}
                     />
                     <ButtonIcon icon="add" onPress={handleAddPlayer} />
                 </S.Form>
