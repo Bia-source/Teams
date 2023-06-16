@@ -16,7 +16,7 @@ export async function playerAddByGroup({ newPlayer, group }: AddNewPlayerProps) 
         const storagePlayers = await playersGetByGroup(group);
         const playerAlreadyExists = storagePlayers.filter(player => player.name === newPlayer.name);
         if(playerAlreadyExists.length > 0){
-            throw new AppError('Essa pessoa já esta adicionada em um time aqui')
+            throw new AppError('Esse jogador já está adicionada em um time aqui')
         }
         const storage = JSON.stringify([...storagePlayers, newPlayer]);
         await AsyncStorage.setItem(`${PLAYER_COLLECTION}-${group}`, storage);

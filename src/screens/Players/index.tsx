@@ -8,15 +8,16 @@ import { Highlight } from "@components/Highlight";
 import { Input } from "@components/Input";
 import { ListEmpty } from "@components/ListEmpty";
 import { PlayerCard } from "@components/PlayerCard";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { PlayerStorageDTO } from "@storage/player/PlayerStorageDTO";
 import { playerAddByGroup } from "@storage/player/playerAddByGroup";
+import { playersDeleteByGroup } from "@storage/player/playerDeleteByGroup";
 import { playersGetByGroupAndTeam } from "@storage/player/playerGetByGroupAndTeam";
 import { AppError } from "@utils/AppError";
 import { useEffect, useRef, useState } from "react";
 import { Alert, FlatList, Keyboard, TextInput } from "react-native";
 import * as S from "./style";
-import { playersDeleteByGroup } from "@storage/player/playerDeleteByGroup";
+import { groupDeleteByName } from "@storage/group/groupDeleteByName";
 
 type RouteParams = {
     group: string;
@@ -26,7 +27,9 @@ export function Players() {
     const [newPlayerName, setNewPlayerName] = useState('');
     const [team, setTeam] = useState('Time A');
     const [players, setPlayers] = useState<PlayerStorageDTO[]>([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
+    const navigation = useNavigation();
     const route = useRoute();
 
     const { group } = route.params as RouteParams;
@@ -67,40 +70,68 @@ export function Players() {
             setPlayers(playersByTeam);
         } catch (error) {
             console.log(error);
-            Alert.alert('Pessoas', 'Não foi possivel carregar as pessoas do time selecionado');
+            Alert.alert('Jogadores', 'Não foi possivel carregar todos o jogadores do time selecionado');
         }
     }
 
-    async function handleRemovePlayer(playerName: string){
-       try {      
-          Alert.alert(
-            'Remover jogador',
-            `Tem certeza de que deseja remover ${playerName}?`,
+    async function handleRemovePlayer(playerName: string) {
+        try {
+            Alert.alert(
+                'Remover jogador',
+                `Tem certeza de que deseja remover ${playerName}?`,
+                [
+                    {
+                        text: "Sim",
+                        style: "destructive",
+                        onPress: async () => {
+                            await playersDeleteByGroup({ group, playerName });
+                            fetchPlayersByTeam();
+                        }
+                    },
+                    {
+                        text: "Não",
+                        style: "cancel"
+                    }
+                ]
+            )
+
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Remover Player', 'Não foi possivel remover esse jogador');
+        }
+    }
+
+    async function groupRemove(){
+       try {
+         await groupDeleteByName(group);
+         navigation.navigate('groups');
+       } catch (error) {
+         console.log(error);
+         Alert.alert('Remover Grupo', `Não foi possivel remover o grupo ${group}`);
+       }
+    }
+
+    async function handleDeleteGroup(){
+        Alert.alert(
+            'Remover Grupo',
+            `Tem certeza de que deseja remover o grupo ${group}?`,
             [
                 {
                     text: "Sim",
-                    style: "destructive",
-                    onPress: async ()=> { 
-                        await playersDeleteByGroup({group, playerName});
-                        fetchPlayersByTeam()
-                    }
+                    style:"destructive",
+                    onPress: ()=> { groupRemove() }
                 },
                 {
                     text: "Não",
                     style: "cancel"
                 }
             ]
-          )
-          
-       } catch (error) {
-         console.log(error);
-         Alert.alert('Remover Player', 'Não foi possivel remover esse jogador');
-       }
+        )
     }
 
-    useEffect(()=> {
+    useEffect(() => {
         fetchPlayersByTeam();
-    },[team]);
+    }, [team]);
 
     return (
         <>
@@ -113,7 +144,7 @@ export function Players() {
                 <S.Form>
                     <Input
                         inputRef={newPlayerNameInputRef}
-                        placeholder="Nome da pessoa"
+                        placeholder="Nome do jogador"
                         autoCorrect={false}
                         onChangeText={setNewPlayerName}
                         value={newPlayerName}
@@ -128,11 +159,11 @@ export function Players() {
                         data={['Time A', 'Time B']}
                         keyExtractor={item => item}
                         renderItem={({ item }) => (
-                            <Filter
-                                title={item}
-                                isActive={item === team}
-                                onPress={() => setTeam(item)}
-                            />
+                                    <Filter
+                                        title={item}
+                                        isActive={item === team}
+                                        onPress={() => setTeam(item)}
+                                    />
                         )}
                         horizontal
                     />
@@ -152,7 +183,7 @@ export function Players() {
                         />
                     )}
                     ListEmptyComponent={() => (
-                        <ListEmpty message="Não há pessoas nesse time." />
+                        <ListEmpty message="Não há jogadores nesse time." />
                     )}
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={[
@@ -163,6 +194,7 @@ export function Players() {
                 <Button
                     title="Remover Turma"
                     type="SECONDARY"
+                    onPress={handleDeleteGroup}
                 />
             </S.Container>
         </>

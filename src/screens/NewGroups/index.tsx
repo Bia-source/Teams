@@ -47,7 +47,7 @@ export function NewGroups() {
                     <S.Icon />
                     <Highlight
                         title="Nova Turma"
-                        subtitle="Crie a turma para adicionar as pessoas"
+                        subtitle="Crie a turma para adicionar os jogadores"
                     />
 
                      <Input
