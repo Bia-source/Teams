@@ -25,6 +25,9 @@
       ],"@storage/*": [
         "./src/storage/*"
       ],
+      "@services/*": [
+        "./src/services/*"
+      ],
     }
   }
 }

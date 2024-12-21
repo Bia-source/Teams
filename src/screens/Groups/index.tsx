@@ -11,7 +11,7 @@ import { groupsGetAll } from "@storage/group/groupGetAll";
 import { Loading } from "@components/Loading";
 
 export function Groups() {
-    const [groups, setGroup] = useState<string[]>([]);
+    const [groups, setGroup] = useState<any[]>([]);
     const [isloading, setIsLoading] = useState<boolean>(true);
     const navigation = useNavigation();
 
@@ -54,7 +54,7 @@ export function Groups() {
                     keyExtractor={(item) => item}
                     renderItem={({ item }) => (
                         <GroupCard
-                            title={item}
+                            title={item.squad.name_squad}
                             onPress={() => handleOpenGroup(item)}
                         />
                     )}
